@@ -19,7 +19,7 @@
 ```
 - Make sure your database is running
 - To start server on development run ``` npm run dev or yarn dev```
-- To start server on development update the **NODE_ENV** to production and run ```yarn start or npm start```
+- To start server on production update the **NODE_ENV** to production and run ```yarn start or npm start```
 
 ### Testing: To run the test provide the following
 - create an .env.test file 
