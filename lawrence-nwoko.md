@@ -59,7 +59,7 @@ curl -X GET --location "http://localhost:8017/api/average_time/?boundaryId=2&veh
 ```
 
 ```
-curl -X GET --location "http://localhost:8017/api/estimated_date_and_time_of_arrival/?date_time=2022-01-27T14:17:23.773Z" \
+curl -X GET --location "http://localhost:8017/api/estimated_date_and_time_of_arrival/?boundaryId=2&vehicleId=1&date=2022-01-27&time17:23.773Z" \
     -H "Content-Type: application/json"
 ```
 
@@ -72,8 +72,17 @@ Content-Type: application/json
 ```
 ***Estimated Date and time of arrival:*** `` Provide date a query params date_time=<value of data time>``
 ```http request
-GET http://localhost:8017/api/estimated_date_and_time_of_arrival/?date_time=2022-01-27T14:17:23.773Z
+GET http://localhost:8017/api/estimated_date_and_time_of_arrival/?boundaryId=2&vehicleId=1&date=2022-01-27&time=14:17
 Content-Type: application/json
 ```
+
+# Test Recommendations
+
+**The Following should be implemented in a production testing environment**
+
+``
+The API response should also be tested for its return values in order to certify that it conforms to the structure required; this will make it more effective in catching errors.
+``
+
 
 

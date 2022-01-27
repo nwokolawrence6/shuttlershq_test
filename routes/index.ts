@@ -1,34 +1,38 @@
 import express, { Request, Response } from 'express'
 import Db from '../db/db'
-import moment, { Moment } from 'moment'
 import Validation from '../helpers/validation'
-import momentDurationFormat from 'moment-duration-format'
+import Utils from '../helpers/utils'
+import moment, { Moment } from 'moment'
+const utils = new Utils()
 
-momentDurationFormat(moment as any)
 const router = express.Router()
 
 router.get('/average_time', async function (req: Request, res: Response):Promise<void> {
-  const RAM = []
   const connection = await new Db().connect()
   try {
     await new Validation().validateAverageTimeQuery(req.query)
-    // let query:string = `SELECT * from vehicle_boundary_events where  boundary_id = ${req.query.boundary_id}  AND (created_at between DATE_ADD(NOW( ), INTERVAL -1 MONTH ) and now()) order by vehicle_id asc ,id asc`
     const query = `select * from vehicle_boundary_events where boundary_id = ${req.query.boundaryId}  AND (created_at between DATE_ADD(NOW( ), INTERVAL -1 MONTH ) and now()) AND vehicle_id = ${req.query.vehicleId} order by id asc;`
     const [records]:any = await connection.query(query)
-    let hold:string = null
-    for (let i = 0; i < records.length; i++) {
-      if (records[i].detected_event === 'enter') {
-        hold = records[i].created_at
-      } else {
-        const entry:Moment = moment(hold)
-        const exit: Moment = moment(records[i].created_at)
-        RAM.push(exit.diff(entry, 'seconds'))
-        hold = null
-      }
-    }
-    const Sum = RAM.reduce((previousValue, currentValue) => previousValue + currentValue)
-    const Avg = Sum / (RAM.length) || 0
-    const result:string = moment.duration(Avg, 'seconds').format('y [years] d [days] h [hours] m [minutes] s [seconds]')
+    const result:any = utils.ConvertToDuration(records)
+    res.json({
+      error: false,
+      result: result.formatted
+    })
+  } catch (e) {
+    res.status(400).json(e)
+  } finally {
+    connection.destroy()
+  }
+})
+router.get('/estimated_date_and_time_of_arrival', async (req: Request, res: Response):Promise<void> => {
+  const connection = await new Db().connect()
+  try {
+    await new Validation().validateEstimatedDateAndTimeQuery(req.query)
+    const query = `select * from vehicle_boundary_events where boundary_id = ${req.query.boundaryId}  AND (created_at between DATE_ADD(NOW( ), INTERVAL -1 MONTH ) and now()) AND vehicle_id = ${req.query.vehicleId} order by id asc;`
+    const [records]:any = await connection.query(query)
+    const value:any = utils.ConvertToDuration(records)
+    const futureDate:Moment = moment(req.query.date + ' ' + req.query.time, 'YYYY-MM-DD HH:mm')
+    const result:Moment = moment(futureDate).add(value.raw, 'seconds')
     res.json({
       error: false,
       result
@@ -38,8 +42,5 @@ router.get('/average_time', async function (req: Request, res: Response):Promise
   } finally {
     connection.destroy()
   }
-})
-router.get('/estimated_date_and_time_of_arrival', async function (req: Request, res: Response):Promise<void> {
-
 })
 export default router
