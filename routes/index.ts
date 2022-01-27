@@ -28,11 +28,18 @@ router.get('/average_time', async function (req: Request, res: Response):Promise
     }
     const Sum = RAM.reduce((previousValue, currentValue) => previousValue + currentValue)
     const Avg = Sum / (RAM.length) || 0
-    res.send(moment.duration(Avg, 'seconds').format('y [years] d [days] h [hours] m [minutes] s [seconds]'))
+    const result:string = moment.duration(Avg, 'seconds').format('y [years] d [days] h [hours] m [minutes] s [seconds]')
+    res.json({
+      error: false,
+      result
+    })
   } catch (e) {
     res.status(400).json(e)
   } finally {
     connection.destroy()
   }
+})
+router.get('/estimated_date_and_time_of_arrival', async function (req: Request, res: Response):Promise<void> {
+
 })
 export default router

@@ -41,17 +41,39 @@
  ``` 
     GET Average Time
      #Get the average time it takes to move between each bus stop along the route for the one month period
-    /api/average_time 
+     query boundaryId= <provide boundary ID> 
+     query vehicleId= <provide vehicle ID>
+     Eg
+    /api/average_time/?boundaryId=1&vehicleId=1
    
      #Get the estimated date and time of arrival for the vehicle on this travel route
     GET estimated_date_and_time_of_arrival
-    /api/estimated_date_and_time_of_arrival 
+      query date_time= <Provide future date time>
+    /api/estimated_date_and_time_of_arrival/?date_time=2022-01-27T14:17:23.773Z
  ```
-1) using the terminal
- Open your terminal and enter
-  ```curl http://localhost:<PROT>/api/average_time/\?boundaryId\=2\&vehicleId\=1```
+#using the terminal
 
+```
+curl -X GET --location "http://localhost:8017/api/average_time/?boundaryId=2&vehicleId=1" \
+    -H "Content-Type: application/json"
+```
 
-2)  ```curl http://localhost:<PROT>/api/average_time/\?boundaryId\=2\&vehicleId\=1```
+```
+curl -X GET --location "http://localhost:8017/api/estimated_date_and_time_of_arrival/?date_time=2022-01-27T14:17:23.773Z" \
+    -H "Content-Type: application/json"
+```
+
+# Test API in the browser 
+
+***Average Time*** ``Provide date a query params boundaryId=<ID of the boundary> and vehicleId=<ID of the boundary> vehicle``
+```http request
+GET http://localhost:8017/api/average_time/?boundaryId=2&vehicleId=1
+Content-Type: application/json
+```
+***Estimated Date and time of arrival:*** `` Provide date a query params date_time=<value of data time>``
+```http request
+GET http://localhost:8017/api/estimated_date_and_time_of_arrival/?date_time=2022-01-27T14:17:23.773Z
+Content-Type: application/json
+```
 
 
