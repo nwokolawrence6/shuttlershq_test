@@ -70,7 +70,7 @@ curl -X GET --location "http://localhost:8017/api/estimated_date_and_time_of_arr
 GET http://localhost:8017/api/average_time/?boundaryId=2&vehicleId=1
 Content-Type: application/json
 ```
-***Estimated Date and time of arrival:*** `` Provide date a query params date_time=<value of data time>``
+***Estimated Date and time of arrival:*** `` Provide date a query params boundaryId=<Provide boundary Id>&vehicleId=<Provide vehicle Id>&date=<Provide travel date>&time=<provide travel time>``
 ```http request
 GET http://localhost:8017/api/estimated_date_and_time_of_arrival/?boundaryId=2&vehicleId=1&date=2022-01-27&time=14:17
 Content-Type: application/json
