@@ -80,8 +80,10 @@ Content-Type: application/json
 
 **The Following should be implemented in a production testing environment**
 
+
+###Future updates
 ``
-The API response should also be tested for its return values in order to certify that it conforms to the structure required; this will make it more effective in catching errors.
+The API wolud also be tested for its return values in order to certify that it conforms to the structure required; this will make it more effective in catching errors.
 ``
 
 
